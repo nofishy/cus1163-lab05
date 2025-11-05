@@ -31,7 +31,35 @@ public class MathCalculatorLab {
     // Example: fibonacci(8) = 21
     public static Runnable fibonacciCalculator(CalculatorBase calc) {
         // TODO: Return a Runnable (use lambda or anonymous class)
-        return null; // Replace this
+        return () -> {
+            String threadName = Thread.currentThread().getName();
+            int n = calc.n;
+
+            System.out.println(threadName + " computing: fib(" + n + ")");
+
+            if (n <= 1) {
+                calc.result = n;
+            } else {
+                long prev = 0;
+                long curr = 1;
+
+                for (int i = 2; i <= n; i++) {
+                    long next = prev + curr;
+                    prev = curr;
+                    curr = next;
+
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return;
+                    }
+                }
+                calc.result = curr;
+            }
+
+            System.out.println(threadName + " completed: fibonacci(" + n + ") = " + calc.result);
+        };
     }
 
     // TODO 2: Implement this method
@@ -48,7 +76,28 @@ public class MathCalculatorLab {
     // Example: sumOfSquares(5) = 1 + 4 + 9 + 16 + 25 = 55
     public static Runnable sumOfSquaresCalculator(CalculatorBase calc) {
         // TODO: Return a Runnable (use lambda or anonymous class)
-        return null; // Replace this
+        return () -> {
+            String threadName = Thread.currentThread().getName();
+            int n = calc.n;
+            long sum = 0;
+
+            System.out.println(threadName + " computing: 1² + 2² + 3² + ... + " + n + "²");
+
+            for (int i = 1; i <= n; i++) {
+                sum += (long) i * i;
+
+                try {
+                    Thread.sleep(5);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+            }
+
+            calc.result = sum;
+
+            System.out.println(threadName + " completed: sumOfSquares(" + n + ") = " + calc.result);
+        };
     }
 
     // Main method (PROVIDED - DO NOT MODIFY)
